@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+
+  <!-- Properties for Razor -->
+  <property>
+    <!-- 17monipdb.dat文件在HDFS中的路径，这个文件用于在将HDFS里的数据导入HBase时根据IP查询地理位置使用，需要预先手动上传到hdfs，17monipdb.dat文件在razor-mr下的distcache目录下 -->
+    <name>17monipdb.hdfs.path</name>
+    <value>/user/hbase/17monipdb.dat</value>
+  </property>
+
+  <!-- SQL DB configuration, might be DB2, mysql, etc. -->
+  <property>
+    <!-- SQL JDBC URL -->
+    <!-- URL format: jdbc:<DB Type>://<hostname>:<port>/<DB Name> -->
+    <name>sql.jdbc.url</name>
+    <value>jdbc:db2://DB2.Ali:50000/razor</value>
+  </property>
+
+  <property>
+    <!-- SQL DB username -->
+    <name>sql.jdbc.user</name>
+    <value>db2inst1</value>
+  </property>
+
+  <property>
+    <!-- SQL DB password -->
+    <name>sql.jdbc.passwd</name>
+    <value>bluejan@)!$</value>
+  </property>
+
+  <property>
+    <!-- SQL DB prefix -->
+    <name>sql.razor.db.prefix</name>
+    <value>razor_</value>
+  </property>
+
+  <property>
+    <!-- HBase reducer 数量如果不填，默认为4 -->
+    <name>hbase.reduce.tasknum</name>
+    <value>9</value>
+  </property>
+
+  <property>
+    <!-- HBase scanner caching for razor-mr -->
+    <name>hbase.razor.scanner.caching</name>
+    <value>20000</value>
+  </property>
+
+  <property>
+    <!-- Temporary HFile path on HDFS for importing data to HBase -->
+    <!-- Don't set it in /tmp, cause /tmp is periodic cleaned by Hadoop -->
+    <!-- Default value is /user/hbase/HFiles if left this property empty -->
+    <name>hdfs.tmp.hfile.path</name>
+    <value>/user/hbase/HFiles</value>
+  </property>
+
+  <property>
+    <!-- HDFS file pattern for MapReduce input -->
+    <name>hdfs.file.pattern</name>
+    <value>.*\/cd.log.*</value>
+  </property>
+
+  <!-- 以下几个property的作用都是指定数据源在HDFS里的路径 -->
+  <property>
+    <name>hdfs.razor.clientdata.path</name>
+    <value>/user/hbase/cobub-razor/cd</value>
+  </property>
+
+  <property>
+    <name>hdfs.razor.event.path</name>
+    <value>/user/hbase/cobub-razor/event</value>
+  </property>
+
+  <property>
+    <name>hdfs.razor.usinglog.path</name>
+    <value>/user/hbase/cobub-razor/usinglog</value>
+  </property>
+
+  <property>
+    <name>hdfs.razor.error.path</name>
+    <value>/user/hbase/cobub-razor/error</value>
+  </property>
+
+  <property>
+    <name>hdfs.razor.appinfo.path</name>
+    <value>/user/hbase/cobub-razor/appinfo</value>
+  </property>
+
+  <property>
+    <name>hdfs.razor.tag.path</name>
+    <value>/user/hbase/cobub-razor/tag</value>
+  </property>
+
+</configuration>

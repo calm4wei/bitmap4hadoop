@@ -1,0 +1,11 @@
+
+{"havegps":"true","longitude":"116.2354345","version":"2.0","appkey":"1cfdb0601fce11e5bb1c005056ae0c3b",
+"clientip":"192.168.1.4","deviceid":"359991068920402","havegravity":"true",
+"modulename":"I9228","lac":"14599","event_identifier":"menu_logout",
+"time":"2015-07-15 00:59:59", -- 客户端时间
+"platform":"Android","mccmnc":"46697",  "ismobiledevice":"true",
+"localtime":"2015-07-15 00:59:59", -- 上传服务器时间，目前已此为准
+"havebt":"true","latitude":"39.4534523","resolution":"1176*664","havewifi":"true",
+"wifimac":"54:e6:fc:22:45:b6","useridentifier":"root","cellid":"15291",
+"devicename":"HTC Aria A6380","phonenumber":"13953254856","os_version":"1.6",
+"network":"WIFI","isjailbreak":"1","imsi":"454037856454533","language":"ar_MA"}

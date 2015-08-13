@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../RoaringBitmap-RoaringBitmap-0.4.10/RoaringBitmap.iml" filepath="$PROJECT_DIR$/../RoaringBitmap-RoaringBitmap-0.4.10/RoaringBitmap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bigdata-express.iml" filepath="$PROJECT_DIR$/bigdata-express.iml" />
+      <module fileurl="file:///Volumes/disk/Download/baiduyun/笔记和代码/4第四天笔记/hadoop0417/hadoop0417.iml" filepath="/Volumes/disk/Download/baiduyun/笔记和代码/4第四天笔记/hadoop0417/hadoop0417.iml" />
+    </modules>
+  </component>
+</project>
