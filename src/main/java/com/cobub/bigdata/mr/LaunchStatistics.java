@@ -13,7 +13,6 @@ import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -38,8 +37,8 @@ public class LaunchStatistics {
         Config.setup();
         Configuration conf = Config.getConf();
         boolean isSucc = false;
-        String dateTime = null;
-        HTable counter = null;
+//        String dateTime = null;
+        HTable counter;
         try {
             System.out.print("LaunchStatistics starting");
 //            dateTime = args[0];
@@ -72,8 +71,8 @@ public class LaunchStatistics {
 //            job.setMapOutputValueClass(MutableRoaringBitmap.class);
 
             FileInputFormat.setInputPathFilter(job, RegexFilter.class);
-            FileInputFormat.addInputPath(job, new Path(path + "/20150805/12"));
-//            FileInputFormat.addInputPath(job, new Path(path + "/20150805/13"));
+            FileInputFormat.addInputPath(job, new Path(path + "/20150813/16"));
+//            FileInputFormat.addInputPath(job, new Path(path + "/20150805/12"));
 
             logger.info("MR-LaunchStatistics....");
             TableMapReduceUtil.initTableReducerJob(
@@ -179,9 +178,9 @@ public class LaunchStatistics {
             String keyStr = key.toString();
             System.out.println("keyStr=" + keyStr);
             MutableRoaringBitmap bitmap = new MutableRoaringBitmap();
-            ByteBuffer byteBuffer = null;
-            ImmutableRoaringBitmap imbitmap = null;
-            byte[] bytes = null;
+            ByteBuffer byteBuffer;
+            ImmutableRoaringBitmap imbitmap;
+            byte[] bytes;
             for (Text value : values) {
                 bytes = value.getBytes();
                 byteBuffer = ByteBuffer.wrap(bytes);

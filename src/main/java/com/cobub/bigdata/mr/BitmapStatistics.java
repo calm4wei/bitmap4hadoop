@@ -66,8 +66,8 @@ public class BitmapStatistics {
 //            job.setMapOutputValueClass(MutableRoaringBitmap.class);
 
             FileInputFormat.setInputPathFilter(job, RegexFilter.class);
-            FileInputFormat.addInputPath(job, new Path(path + "/20150805/12"));
-            FileInputFormat.addInputPath(job, new Path(path + "/20150805/13"));
+            FileInputFormat.addInputPath(job, new Path(path + "/20150813/16"));
+            FileInputFormat.addInputPath(job, new Path(path + "/20150813/17"));
 //            FileInputFormat.setInputPaths(job,);
             logger.info("MR-BitmapStatistics....");
             TableMapReduceUtil.initTableReducerJob(
