@@ -90,6 +90,7 @@ public class HBaseClient {
             t3 = System.currentTimeMillis();
             get = new Get(Bytes.toBytes(point));
             result = expressTable.get(get);
+
             t4 = System.currentTimeMillis();
 
             bb = ByteBuffer.wrap(result.getValue(Constant.FBytes, Bytes.toBytes(Constant.QUALIFER)));

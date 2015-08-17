@@ -17,8 +17,8 @@ public class LaunchClient {
 
         HTable launchTable = new HTable(Config.getConf(),Constant.TABLE_LAUNCH);
 
-        HBaseClient.findRowByFilter(launchTable, "os_version");
-//        getDimensioin(launchTable);
+//        HBaseClient.findRowByFilter(launchTable, "os_version");
+        getDimensioin(launchTable);
 //        getCounter();
 
         launchTable.close();
@@ -28,7 +28,7 @@ public class LaunchClient {
     public static void getDimensioin(HTable launchTable) throws IOException {
         String[] points = {
                 "20150804_devicename_HTC Aria",
-                "0150804_os_version_1.6"
+                "20150804_os_version_1.6"
         };
         HBaseClient.dimensionareyAny(launchTable,points);
 

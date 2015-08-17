@@ -4,6 +4,7 @@ package com.cobub.bigdata.thread;
 
 import com.cobub.bigdata.common.Config;
 import com.cobub.bigdata.common.Constant;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
@@ -31,8 +32,11 @@ import java.util.concurrent.*;
  */
 public class MultiThreadSearch {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
 
+        Config.setup();
+
+        findMultiDeminality();
     }
     /**
      * 一个月中维度交叉查询
@@ -42,49 +46,94 @@ public class MultiThreadSearch {
     public static void findMultiDeminality() throws IOException, InterruptedException, ExecutionException {
 
         // 指定某几天
-        String[] days = {"20150812","20150812"};
+        String[] days = {"20150804","20150813"};
 
         // 需要查询的指标
-        final String[] indexs = {"devicename_huawei","os_version_1.0"};
+        final String[] indexs = {
+                "devicename_HTC Aria",
+                "os_version_3.2",
+                "platform_Android",
+                "network_CDMA",
+                "version_3.0",
+//                "event_identifier_menu_logout",
+                "ismobiledevice_true",
+                "useridentifier_root"
+        };
 
         // 可以根据天数实例化线程池
         ExecutorService threadTool = Executors.newFixedThreadPool(days.length);
         CompletionService<MutableRoaringBitmap> completionService =
                 new ExecutorCompletionService<MutableRoaringBitmap>(threadTool);
 
+
+//        table.getEndKeys();
         long t1 = System.currentTimeMillis();
         for (final String day:days){
-            final HTable table = new HTable(Config.getConf(), Constant.TABLE_EXPRESS);
+            System.out.println("day=" + day);
+
             final MutableRoaringBitmap bitmap = new MutableRoaringBitmap();
+
             completionService.submit(new Callable<MutableRoaringBitmap>() {
                 public MutableRoaringBitmap call() throws Exception {
                     ImmutableRoaringBitmap imbm;
-                    for (String index : indexs){
+                    int i = 0;
+                    final HTable table = new HTable(Config.getConf(), TableName.valueOf(Constant.TABLE_EXPRESS), Executors.newCachedThreadPool());
+                    for (String index : indexs) {
+
                         Get get = new Get(Bytes.toBytes(day + "_" + index));
+                        System.out.println("get=" + get);
                         Result result = table.get(get);
+                        if (result == null) {
+                            continue;
+                        }
+//                        System.out.println("result=" + result);
                         ByteBuffer bb =
                                 ByteBuffer.wrap(result.getValue(Constant.FBytes, Bytes.toBytes(Constant.QUALIFER)));
                         imbm = new ImmutableRoaringBitmap(bb);
-                        bitmap.and(imbm);
+                        if (i == 0) {
+                            bitmap.or(imbm);
+                        } else {
+                            bitmap.and(imbm);
+                        }
+
+                        i++;
+//                        System.out.println("index=" + index + ",i=" + i);
                     }
+                    table.close();
                     return bitmap;
                 }
+
             });
-            table.close();
+
+
         }
 
+
         // 最终合并的bitmap
-        MutableRoaringBitmap bm1 = new MutableRoaringBitmap();
+        MutableRoaringBitmap bm1 = null;
         for (String day:days){
-            MutableRoaringBitmap bm2 = completionService.take().get();
-            System.out.println("getCardinality=" + bm2.getCardinality() + "getSizeInBytes=" + bm2.getSizeInBytes());
-            bm1.and(bm2);
+            if (bm1 == null){
+                bm1 = completionService.take().get();
+                System.out.println("bm1.getCardinality=" + bm1.getCardinality());
+                continue;
+            } else {
+                MutableRoaringBitmap bm2 = completionService.take().get();
+                System.out.println("bm2.getCardinality=" + bm2.getCardinality());
+                bm1.and(bm2);
+            }
+            System.out.println("bm1.getCardinality=" + bm1.getCardinality());
+
         }
 
         long t2 = System.currentTimeMillis();
-        System.out.println("t2 - t1=" + ((t2 - t1) / 1000));
-        System.out.println("getCardinality" + bm1.getCardinality() + "getSizeInBytes" + bm1.getSizeInBytes());
+        System.out.println("t2 - t1=" + (t2 - t1));
+        System.out.println("getCardinality=" + bm1.getCardinality() + ",getSizeInBytes=" + bm1.getSizeInBytes());
 
+        if (!threadTool.isShutdown()){
+            System.out.println("threadTool.isShutdown=" + threadTool.isShutdown());
+            threadTool.shutdown();
+            System.out.println("threadTool.isShutdown=" + threadTool.isShutdown());
+        }
     }
 
 }
