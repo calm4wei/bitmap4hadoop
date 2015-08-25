@@ -16,6 +16,7 @@
 	    <commonsLangVersion>2.6</commonsLangVersion>
 	    <hbaseVersion>0.98.6-cdh5.3.3</hbaseVersion>
 	    <skipTests>true</skipTests>
+        <mongoVersion>3.0.3</mongoVersion>
   </properties>
 
 	<developers>
@@ -91,6 +92,12 @@
       <artifactId>RoaringBitmap</artifactId>
       <version>0.4.10</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>${mongoVersion}</version>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -105,6 +112,19 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+
+    <repository>
+      <!-- Central Repository -->
+      <id>central2</id>
+      <url>http://central.maven.org/maven2/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
     <repository>
       <!-- Cloudera Repository -->
       <id>cloudera</id>

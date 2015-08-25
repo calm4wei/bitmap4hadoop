@@ -12,7 +12,7 @@ public class DateUtil {
   private final static SimpleDateFormat sdf_dh = new SimpleDateFormat(
           "yyyyMMddHH");
   
-  public static Date str2Date(String date) {
+  public static synchronized Date str2Date(String date) {
     Date d = null;
     try {
       d =  sdf_d.parse(date);
@@ -22,7 +22,7 @@ public class DateUtil {
     return d;
   }
   
-  public static String dateFormat(Date date){
+  public static synchronized String dateFormat(Date date){
     return sdf_d.format(date);
   }
   
@@ -54,7 +54,7 @@ public class DateUtil {
     cal.add(Calendar.DAY_OF_YEAR, days);
     return dateFormat(cal.getTime());
   }
-  public static String formatStrDate(String date){
+  public static synchronized String formatStrDate(String date){
     Calendar cal = Calendar.getInstance();
     cal.setTime(str2Date(date));
     return sdf_dh.format(cal.getTime());
