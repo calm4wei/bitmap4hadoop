@@ -9,10 +9,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.exceptions.DeserializationException;
-import org.apache.hadoop.hbase.filter.ByteArrayComparable;
-import org.apache.hadoop.hbase.filter.CompareFilter;
-import org.apache.hadoop.hbase.filter.FamilyFilter;
-import org.apache.hadoop.hbase.filter.FilterList;
+import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
@@ -34,11 +31,27 @@ public class ParticipateClient {
 //                ByteArrayComparable.parseFrom(Bytes.toBytes("RV")));
 //        filters.addFilter(ff);
 
-        getRV(table,"RV");
-        getRO(table, "RO");
-        getBF(table, "BF");
+//        getRV(table,"RV");
+//        getRO(table, "RO");
+//        getBF(table, "BF");
+
+        getDataByRowkeyDate(table,"20150809");
 
         table.close();
+
+    }
+
+    public static void getDataByRowkeyDate(HTable table, String substring) throws IOException {
+        ResultScanner rs;
+        Scan scan = new Scan();
+        Filter rowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL, new SubstringComparator(substring));
+        scan.setFilter(rowFilter);
+        rs = table.getScanner(scan);
+        Result result;
+        while ((result = rs.next()) != null) {
+            System.out.println(new String(result.getRow()));
+        }
+        rs.close();
 
     }
 

@@ -31,4 +31,41 @@ db.tag_cid.find({"tags":{"$all":["java","江苏南京","宅男","IT男","淘宝"
 {"tag":"宅男","cids":["12313213","2343213","112431213","983453322"..........................]}
 db.tag_cid.find({"tag":"宅男"})    -- 44147ms
 
+===========================
+
+BasicDBObject obj = new BasicDBObject("tags",new BasicDBObject(QueryOperators.ALL,new String[]{
+                "java","江苏南京","宅男","IT男","淘宝","新闻工作者","单身狗"
+                , "桃子" , "双截棍" , "美食" , "时尚" , "美女" , "呵呵" , "法拉利"
+                , "演艺圈" , "牛腩" , "大数据工作者", "现代" , "低调" , "消费水平较低"
+        }));
+
+t2-t1=82, t3-t2=97, count=9
+
+-------------------------------
+
+BasicDBObject obj = new BasicDBObject("tags",new BasicDBObject(QueryOperators.ALL,new String[]{
+                "java","江苏南京","宅男","IT男","淘宝","新闻工作者","单身狗"
+                , "桃子" , "双截棍" , "美食" , "时尚" , "美女" , "呵呵" , "法拉利"
+//                , "演艺圈" , "牛腩" , "大数据工作者", "现代" , "低调" , "消费水平较低"
+        }));
+
+t2-t1=83, t3-t2=83, count=543  -- 返回指定列
+t2-t1=82, t3-t2=78, count=543
+t2-t1=82, t3-t2=80, count=543 -- 在tags上加索引
+
+-------------------------------
+
+BasicDBObject obj = new BasicDBObject("tags",new BasicDBObject(QueryOperators.ALL,new String[]{
+                "java","江苏南京","宅男","IT男","淘宝","新闻工作者","单身狗"
+//                , "桃子" , "双截棍" , "美食" , "时尚" , "美女" , "呵呵" , "法拉利"
+//                , "演艺圈" , "牛腩" , "大数据工作者", "现代" , "低调" , "消费水平较低"
+        }));
+
+t2-t1=81, t3-t2=117, count=55466
+
+-------------------------------
+
+======= modify ==========
+{ "_id" : { "$oid" : "55daf7b93455d9196fbd69c2"} , "appkey" : "1cfdb0601fce11e5bb1c005056ae0c3b" , "cid" : "508558305" , "deviceid" : "33545433968" , "tags" : [ "徒步爱好者" , "python" , "IT男" , "美女" , "爱吃面"]}
+t2-t1=189
 

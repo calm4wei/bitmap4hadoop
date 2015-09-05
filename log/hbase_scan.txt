@@ -1,0 +1,51 @@
+
+rowkey格式: yyyyMMdd_uuid8
+从400,000中，按rowkey进行scan
+scan 'wf:error',{FILTER => "(RowFilter(=,'substring:20150903'))" ,CACHE => 100000}
+-- 100000 row(s) in 23.4780 seconds
+
+
+从1,700,000中，按rowkey进行scan
+scan 'wf:error',{FILTER => "(RowFilter(=,'substring:20150903'))" ,CACHE => 100000}
+-- 100000 row(s) in 21.0080 seconds
+
+从11,700,000中，按rowkey进行scan
+scan 'wf:error',{FILTER => "(RowFilter(=,'substring:20150903'))" ,CACHE => 100000}
+-- count=100000,t2 - t1=49s
+
+====================================================================================
+
+rowkey格式: uuid8_yyyyMMdd
+从700,000中，按rowkey进行scan
+scan 'wf:error',{FILTER => "(RowFilter(=,'substring:20150903'))" ,CACHE => 100000}
+-- 100000 row(s) in 17.3830 seconds
+
+从17,500,000中，按rowkey进行scan
+scan 'wf:error',{FILTER => "(RowFilter(=,'substring:20150903'))" ,CACHE => 100000}
+-- count=100000,t2 - t1=82s
+
+
+多线程插入700，000数据
+Thread[Thread-4,5,main],t2-t1=10775ms
+Thread[Thread-6,5,main],t2-t1=10876
+Thread[Thread-7,5,main],t2-t1=11042
+Thread[Thread-3,5,main],t2-t1=11132
+Thread[Thread-9,5,main],t2-t1=11144
+Thread[Thread-5,5,main],t2-t1=11144
+Thread[Thread-8,5,main],t2-t1=11176
+
+单线程插入10,000,000数据
+-- t2-t1=241428ms(4.02min)
+
+
+多线程插入10,000,000数据
+Thread[Thread-12,5,main],t2-t1=167337ms(2.8min)
+Thread[Thread-11,5,main],t2-t1=167543
+Thread[Thread-8,5,main],t2-t1=168141
+Thread[Thread-10,5,main],t2-t1=168470
+Thread[Thread-7,5,main],t2-t1=168444
+Thread[Thread-6,5,main],t2-t1=168871
+Thread[Thread-3,5,main],t2-t1=168892
+Thread[Thread-5,5,main],t2-t1=168875
+Thread[Thread-9,5,main],t2-t1=168891
+Thread[Thread-4,5,main],t2-t1=168963
